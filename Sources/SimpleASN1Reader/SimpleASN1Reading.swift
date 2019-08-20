@@ -6,19 +6,20 @@
 //  Copyright © 2019 nextincrement
 //
 
-/// This protocol describes how bytes can be extracted from a BER encoding.
+/// The `SimpleASN1Reading` protocol describes how bytes can be extracted from a BER encoding.
 ///
 /// Simple in this context means:
 /// - No conversion between Swift data types and bytes (so, only bytes out)
 /// - No support for high tag numbers (that is, tag numbers are encoded by a single byte)
 /// - No support for encodings that have an indefinite length
+/// - No reading from an underlying `Stream` (the full encoding must be added during initialization)
 ///
-/// Note that the `SimpleASN1Reading` protocol is designed in a way that only a single instance has
-/// to be created to read any encoding as long as it is clear upfront which tags are expected at
-/// each position. If this condition is not met, a new instance should be created for
-/// reading the contents of any structured type that contains optional types or a variable number
-/// of components. The methods `getReaderForContents(identifiedBy:)` and `getReaderForContents()`
-/// can then be used to create a new reader for reading such structured types.
+/// Note that this protocol is designed in a way that only a single instance of an implementation
+/// has to be created to read any encoding, as long as it is clear upfront which tags are expected
+/// at each position. If this condition is not met, a new instance should be created for reading
+/// the contents of any structured type that contains optional types or a variable number of
+/// components. The methods `getReaderForContents(identifiedBy:)` and `getReaderForContents()` can
+/// then be used to create a new reader for reading each structured type.
 public protocol SimpleASN1Reading: AnyObject {
 
   /// Returns a new child reader for reading the contents bytes of the next component. Subsequent

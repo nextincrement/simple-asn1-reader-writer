@@ -9,16 +9,17 @@
 import Foundation
 
 
-/// This protocol describes how a DER encoding can be created or updated by inserting bytes on top
-/// of bytes that have been written before.
+/// The `SimpleASN1Writing` protocol describes how a DER encoding can be created or updated by
+/// inserting bytes on top of bytes that have been written before.
 ///
 /// Simple in this context means:
 /// - No conversion between Swift data types and bytes (so, only bytes in)
 /// - No high tag numbers (that is, tag numbers are encoded by a single byte)
 /// - No support for encodings that have an indefinite length
+/// - No writing to an underlying `Stream`
 ///
-/// Note that the `SimpleASN1Writing` protocol is designed in a way that multiple instances should be
-/// created if the encoding has a tree-like structure that forks into multiple branches.
+/// Note that this protocol is designed in a way that multiple instances should be created if the
+/// encoding has a tree-like structure that forks into multiple branches.
 public protocol SimpleASN1Writing: AnyObject {
 
   /// All encoded bytes added to this writer.
