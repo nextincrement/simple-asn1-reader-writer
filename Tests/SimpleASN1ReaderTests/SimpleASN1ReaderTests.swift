@@ -81,7 +81,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     try subSimpleASN1Reading.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
-  func testReadAheadIdentifier() throws {
+  func testPeek() throws {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
@@ -97,7 +97,7 @@ class SimpleASN1ReaderTests: XCTestCase {
       0x07])
   }
 
-  func testReadAheadIdentifier_noMoreComponentsLeft() throws {
+  func testPeek_noMoreComponentsLeft() throws {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
@@ -611,8 +611,8 @@ class SimpleASN1ReaderTests: XCTestCase {
       testCombinedMethodsToReadBitString_berEncoding),
     ("testGetReaderForContents",testGetReaderForContents),
     ("testGetReaderForContents_identifiedBy",testGetReaderForContents_identifiedBy),
-    ("testReadAheadIdentifier",testReadAheadIdentifier),
-    ("testReadAheadIdentifier_noMoreComponentsLeft",testReadAheadIdentifier_noMoreComponentsLeft),
+    ("testPeek",testPeek),
+    ("testPeek_noMoreComponentsLeft",testPeek_noMoreComponentsLeft),
     ("testReadContents",testReadContents),
     ("testReadContents_identifiedBy",testReadContents_identifiedBy),
     ("testReadContents_zeroBytes",testReadContents_zeroBytes),
