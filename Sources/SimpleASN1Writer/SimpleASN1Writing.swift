@@ -18,8 +18,8 @@ import Foundation
 /// - No support for encodings that have an indefinite length
 /// - No writing to an underlying `Stream`
 ///
-/// Note that this protocol is designed in a way that multiple instances should be created if the
-/// encoding has a tree-like structure that forks into multiple branches.
+/// Note that this protocol is designed in a way that multiple instances of an implementation should
+/// be created if the encoding has a tree-like structure that forks into multiple branches.
 public protocol SimpleASN1Writing: AnyObject {
 
   /// All encoded bytes added to this writer.

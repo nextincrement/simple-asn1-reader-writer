@@ -224,8 +224,8 @@ class SimpleASN1ReaderTests: XCTestCase {
 
   // MARK: - Testing boundary conditions when reading length field
 
-  // Note that tests for boundary conditions when reading the length field are really whitebox tests
-  // since it is assumed that all other methods read this field the same way.
+  // Note that tests for boundary conditions when reading the length field are really white-box
+  // tests since it is assumed that all other methods read this field the same way.
   func testReadContents_127_bytes() throws {
 
     // Prepare test

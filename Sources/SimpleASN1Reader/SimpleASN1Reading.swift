@@ -19,7 +19,7 @@
 /// at each position. If this condition is not met, a new instance should be created for reading
 /// the contents of any structured type that contains optional types or a variable number of
 /// components. The methods `getReaderForContents(identifiedBy:)` and `getReaderForContents()` can
-/// then be used to create a new reader for reading each structured type.
+/// be used to create a new reader for reading each structured type.
 public protocol SimpleASN1Reading: AnyObject {
 
   /// Returns a new child reader for reading the contents bytes of the next component. Subsequent

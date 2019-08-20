@@ -26,7 +26,7 @@ This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, writ
 
 #### Not Supported
 - [ ] Conversion of bytes into Swift data types (such as `Int`, `String` etc.)
-- [ ] Reading and writing from and to an underlying [`Stream`](https://developer.apple.com/documentation/foundation/stream) (that is, the reader and writer contain the full encoding)
+- [ ] Reading and writing from and to an underlying [`Stream`](https://developer.apple.com/documentation/foundation/stream)
 - [ ] High tag numbers (that is, tag numbers are encoded by a single byte)
 - [ ] Encodings with an indefinite length
 - [ ] `ASN.1 CER` encoding format when writing bytes
@@ -50,7 +50,7 @@ See the [rsa-public-key-importer-exporter](https://github.com/nextincrement/rsa-
 
 ## Contribute
 
-Your interest in this project is appreciated. However, contributions will probably _not_ be accepted for the following reasons:
+Your interest in this project is highly appreciated. However, contributions will probably _not_ be accepted for the following reasons:
 - I am just one developer and time is scarce.
 - The development environment that I currently have at hand is a Linux system on a virtual machine. I will thus not always be able to test how this code runs on a macOS or an iOS platform (although the first version will be tested on an iOS platform).
 
