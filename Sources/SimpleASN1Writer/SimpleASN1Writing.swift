@@ -6,9 +6,6 @@
 //  Copyright © 2019 nextincrement
 //
 
-import Foundation
-
-
 /// The `SimpleASN1Writing` protocol describes how a DER encoding can be created or updated by
 /// inserting bytes on top of bytes that have been written before.
 ///
@@ -47,12 +44,18 @@ public protocol SimpleASN1Writing: AnyObject {
 
   /// Writes length and identifier bytes, in that particular order, to wrap all bytes written below.
   ///
-  /// - Parameter identifier: ASN.1 identifier byte that will be written on top of length bytes and
-  /// bytes below
+  /// - Parameter with: ASN.1 identifier byte that will be written on top of length bytes and bytes
+  ///     below
+  func wrap(with identifier: UInt8)
+
+  /// Deprecated, use method `wrap`
   func writeLengthAndIdentifier(_ identifier: UInt8)
 
   /// Convenience method that writes length and identifier bytes of a bit string, in that particular
   /// order, to wrap all bytes written below. The bit string is assumed to have no unused bits (that
   /// is, the fist contents byte has value 0x00).
+  func wrapBitString()
+
+  /// Deprecated, use method `wrapBitstring`
   func writeLengthAndIdentifierOfBitString()
 }

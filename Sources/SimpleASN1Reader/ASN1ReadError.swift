@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public enum ASN1ReadError: LocalizedError, Equatable {
   case invalidIdentifier(
     expectedIdentifier: UInt8,

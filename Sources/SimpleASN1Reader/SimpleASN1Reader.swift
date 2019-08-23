@@ -35,13 +35,6 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     return SimpleASN1Reader(Array(contents))
   }
 
-  public func peek() throws -> UInt8 {
-    guard encoding.count > currentIndex else {
-      return 0x00
-    }
-    return encoding[currentIndex]
-  }
-
   public func readContents() throws -> [UInt8] {
     let contents = try doReadContents()
 
@@ -61,18 +54,6 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     )
 
     return Array(contents)
-  }
-
-  public func skipIdentifierAndLength() throws {
-    let contentsLength = try readLength()
-
-    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
-  }
-
-  public func skipIdentifierAndLength(expectedIdentifier: UInt8) throws {
-    let contentsLength = try readLength(identifiedBy: expectedIdentifier)
-
-    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
   }
 
   public func skipComponent() throws {
@@ -97,6 +78,35 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
       )
     }
     currentIndex += expectedBytes.count
+  }
+
+  public func unwrap() throws {
+    let contentsLength = try readLength()
+
+    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
+  }
+
+  @available(*, deprecated, renamed: "unwrap")
+  public func skipIdentifierAndLength() throws {
+    try unwrap()
+  }
+
+  public func unwrap(expectedIdentifier: UInt8) throws {
+    let contentsLength = try readLength(identifiedBy: expectedIdentifier)
+
+    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
+  }
+
+  @available(*, deprecated, renamed: "unwrap")
+  public func skipIdentifierAndLength(expectedIdentifier: UInt8) throws {
+    try unwrap(expectedIdentifier: expectedIdentifier)
+  }
+
+  public func peek() throws -> UInt8 {
+    guard encoding.count > currentIndex else {
+      return 0x00
+    }
+    return encoding[currentIndex]
   }
 
   private func doReadContents(

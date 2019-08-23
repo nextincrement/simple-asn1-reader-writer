@@ -39,13 +39,6 @@ public protocol SimpleASN1Reading: AnyObject {
   /// - Returns: A reader that implements the `SimpleASN1Reading` protocol
   func getReaderForContents(identifiedBy expectedIdentifier: UInt8) throws -> SimpleASN1Reading
 
-  /// Reads the identifier of the next component without consuming it. Subsequent reads will work as
-  /// if this method has not been called. If there are no more components left to read, the value
-  /// 0x00 will be returned.
-  ///
-  /// - Returns: ASN.1 identifier or 0x00
-  func peek() throws -> UInt8
-
   /// Reads contents bytes of the next component. Subsequent reads will work on bytes below.
   ///
   /// - Returns: Contents bytes
@@ -72,19 +65,6 @@ public protocol SimpleASN1Reading: AnyObject {
   /// - Returns: Contents bytes of the bit string while excluding the first byte
   func readContentsOfBitString() throws -> [UInt8]
 
-  /// Skips identifier and length bytes of the next component so that subsequent reads will work on
-  /// bytes below.
-  func skipIdentifierAndLength() throws
-
-  /// Skips identifier and length bytes of the next component so that subsequent reads will work on
-  /// bytes below.
-  ///
-  /// Note that the identifier byte will be verified and that an error is thrown if it does not
-  /// match provided argument.
-  ///
-  /// - Parameter expectedIdentifier: ASN.1 identiefier that will be verified
-  func skipIdentifierAndLength(expectedIdentifier: UInt8) throws
-
   /// Skips bytes of a component (including identifier, length and contents bytes) so that
   /// subsequent reads will work on bytes below.
   func skipComponent() throws
@@ -105,4 +85,30 @@ public protocol SimpleASN1Reading: AnyObject {
   ///
   /// - Parameter matching: Bytes that will be verified
   func skipBytes(matching expectedBytes: [UInt8]) throws
+
+  /// Skips identifier and length bytes of the next component so that subsequent reads will work on
+  /// bytes below.
+  func unwrap() throws
+
+  /// Decprecated, use method `unwrap()`
+  func skipIdentifierAndLength() throws
+
+  /// Skips identifier and length bytes of the next component so that subsequent reads will work on
+  /// bytes below.
+  ///
+  /// Note that the identifier byte will be verified and that an error is thrown if it does not
+  /// match provided argument.
+  ///
+  /// - Parameter expectedIdentifier: ASN.1 identiefier that will be verified
+  func unwrap(expectedIdentifier: UInt8) throws
+
+  /// Decprecated, use method `unwrap(expectedIdentifier:)`
+  func skipIdentifierAndLength(expectedIdentifier: UInt8) throws
+
+  /// Reads the identifier of the next component without consuming it. Subsequent reads will work as
+  /// if this method has not been called. If there are no more components left to read, the value
+  /// 0x00 will be returned.
+  ///
+  /// - Returns: ASN.1 identifier or 0x00
+  func peek() throws -> UInt8
 }

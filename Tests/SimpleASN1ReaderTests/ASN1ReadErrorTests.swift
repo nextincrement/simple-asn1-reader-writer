@@ -7,7 +7,6 @@
 //
 
 import XCTest
-
 import SimpleASN1Reader
 
 class ASN1ReadErrorTests: XCTestCase {

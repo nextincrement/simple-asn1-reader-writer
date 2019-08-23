@@ -7,7 +7,6 @@
 //
 
 import XCTest
-
 import SimpleASN1Writer
 
 class SimpleASN1WriterTests: XCTestCase {
@@ -25,7 +24,7 @@ class SimpleASN1WriterTests: XCTestCase {
     parentWriter.writeBytes(from: childWriter)
 
     // Check result
-    parentWriter.writeLengthAndIdentifier(0x30)
+    parentWriter.wrap(with: 0x30)
     let derEncoding = parentWriter.encoding
 
     XCTAssertEqual([0x30, 0x05, 0x02, 0x01, 0x01, 0x05, 0x00], derEncoding)
@@ -59,14 +58,14 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual([0x30, 0x02, 0x05, 0x00], derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifier() {
+  func testWrap() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
     simpleASN1Writer.writeBytes([0x05, 0x00])
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifier(0x30)
+    simpleASN1Writer.wrap(with: 0x30)
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -74,7 +73,7 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual([0x30, 0x02, 0x05, 0x00], derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifier_127_bytes() {
+  func testWrap_127_bytes() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
@@ -82,7 +81,7 @@ class SimpleASN1WriterTests: XCTestCase {
     simpleASN1Writer.writeBytes(bytes127)
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifier(0x30)
+    simpleASN1Writer.wrap(with: 0x30)
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -90,7 +89,7 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual(expectedResult, derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifier_128_bytes() {
+  func testWrap_128_bytes() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
@@ -98,7 +97,7 @@ class SimpleASN1WriterTests: XCTestCase {
     simpleASN1Writer.writeBytes(bytes128)
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifier(0x30)
+    simpleASN1Writer.wrap(with: 0x30)
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -106,14 +105,14 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual(expectedResult, derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifierOfBitString() {
+  func testWrapBitString() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
     simpleASN1Writer.writeBytes([0x05, 0x00])
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifierOfBitString()
+    simpleASN1Writer.wrapBitString()
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -121,7 +120,7 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual([0x03, 0x03, 0x00, 0x05, 0x00], derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifierOfBitString_126_bytes() {
+  func testWrapBitString_126_bytes() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
@@ -129,7 +128,7 @@ class SimpleASN1WriterTests: XCTestCase {
     simpleASN1Writer.writeBytes(bytes126)
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifierOfBitString()
+    simpleASN1Writer.wrapBitString()
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -137,7 +136,7 @@ class SimpleASN1WriterTests: XCTestCase {
     XCTAssertEqual(expectedResult, derEncoding)
   }
 
-  func testWriteBytesLengthAndIdentifierOfBitString_127_bytes() {
+  func testWrapBitString_127_bytes() {
 
     // Prepare test
     let simpleASN1Writer = SimpleASN1Writer()
@@ -145,7 +144,7 @@ class SimpleASN1WriterTests: XCTestCase {
     simpleASN1Writer.writeBytes(bytes127)
 
     // Call function under test
-    simpleASN1Writer.writeLengthAndIdentifierOfBitString()
+    simpleASN1Writer.wrapBitString()
 
     // Check result
     let derEncoding = simpleASN1Writer.encoding
@@ -165,13 +164,11 @@ class SimpleASN1WriterTests: XCTestCase {
     ("testWriteBytes_from", testWriteBytes_from),
     ("testWriteBytes", testWriteBytes),
     ("testWriteContents", testWriteContents),
-    ("testWriteBytesLengthAndIdentifier", testWriteBytesLengthAndIdentifier),
-    ("testWriteBytesLengthAndIdentifier_127_bytes", testWriteBytesLengthAndIdentifier_127_bytes),
-    ("testWriteBytesLengthAndIdentifier_128_bytes", testWriteBytesLengthAndIdentifier_128_bytes),
-    ("testWriteBytesLengthAndIdentifierOfBitString", testWriteBytesLengthAndIdentifierOfBitString),
-    ("testWriteBytesLengthAndIdentifierOfBitString_126_bytes",
-      testWriteBytesLengthAndIdentifierOfBitString_126_bytes),
-    ("testWriteBytesLengthAndIdentifierOfBitString_127_bytes",
-      testWriteBytesLengthAndIdentifierOfBitString_127_bytes),
+    ("testWrap", testWrap),
+    ("testWrap_127_bytes", testWrap_127_bytes),
+    ("testWrap_128_bytes", testWrap_128_bytes),
+    ("testWrapBitString", testWrapBitString),
+    ("testWrapBitString_126_bytes", testWrapBitString_126_bytes),
+    ("testWrapBitString_127_bytes", testWrapBitString_127_bytes),
   ]
 }
