@@ -19,21 +19,56 @@ public final class SimpleASN1Writer: SimpleASN1Writing {
 
   public init() {}
 
-  public func writeBytes(from writer: SimpleASN1Writer) {
+  public func write(from writer: SimpleASN1Writer) {
     encoding.insert(contentsOf: writer.encoding, at: 0)
   }
 
-  public func writeBytes(_ bytes: [UInt8]) {
+  @available(*, deprecated, renamed: "write")
+  public func writeBytes(from writer: SimpleASN1Writer) {
+    write(from: writer)
+  }
+
+  public func write(_ bytes: [UInt8]) {
     encoding.insert(contentsOf: bytes, at: 0)
   }
 
-  public func writeContents(_ contents: [UInt8], identifiedBy identifier: UInt8) {
-    encoding.insert(contentsOf: contents, at: 0)
-
-    doWriteLengthAndIdentifier(with: identifier, onTopOf: contents)
+  @available(*, deprecated, renamed: "write")
+  public func writeBytes(_ bytes: [UInt8]) {
+    write(bytes)
   }
 
-  private func doWriteLengthAndIdentifier(with identifier: UInt8, onTopOf contents: [UInt8]) {
+  public func write(_ contents: [UInt8], identifiedBy identifier: UInt8) {
+    encoding.insert(contentsOf: contents, at: 0)
+
+    writeLengthAndIdentifier(with: identifier, onTopOf: contents)
+  }
+
+  @available(*, deprecated, renamed: "write")
+  public func writeContents(_ contents: [UInt8], identifiedBy identifier: UInt8) {
+    write(contents, identifiedBy: identifier)
+  }
+
+  public func wrap(with identifier: UInt8) {
+    writeLengthAndIdentifier(with: identifier, onTopOf: encoding)
+  }
+
+  @available(*, deprecated, renamed: "wrap")
+  public func writeLengthAndIdentifier(_ identifier: UInt8) {
+    wrap(with: identifier)
+  }
+
+  public func wrapBitString() {
+    encoding.insert(supportedFirstContentsByte, at: 0)
+
+    writeLengthAndIdentifier(with: bitStringIdentifier, onTopOf: encoding)
+  }
+
+  @available(*, deprecated, renamed: "wrapBitString")
+  public func writeLengthAndIdentifierOfBitString() {
+    wrapBitString()
+  }
+
+  private func writeLengthAndIdentifier(with identifier: UInt8, onTopOf contents: [UInt8]) {
     encoding.insert(contentsOf: lengthField(of: contents), at: 0)
 
     encoding.insert(identifier, at: 0)
@@ -46,26 +81,6 @@ public final class SimpleASN1Writer: SimpleASN1Writing {
       return [UInt8(length)]
     }
     return longLengthField(of: contentBytes)
-  }
-
-  public func wrap(with identifier: UInt8) {
-    doWriteLengthAndIdentifier(with: identifier, onTopOf: encoding)
-  }
-
-  @available(*, deprecated, renamed: "wrap")
-  public func writeLengthAndIdentifier(_ identifier: UInt8) {
-    wrap(with: identifier)
-  }
-
-  public func wrapBitString() {
-    encoding.insert(supportedFirstContentsByte, at: 0)
-
-    doWriteLengthAndIdentifier(with: bitStringIdentifier, onTopOf: encoding)
-  }
-
-  @available(*, deprecated, renamed: "wrapBitString")
-  public func writeLengthAndIdentifierOfBitString() {
-    wrapBitString()
   }
 
   private func longLengthField(of contentBytes: [UInt8]) -> [UInt8] {

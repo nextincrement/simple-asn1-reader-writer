@@ -85,7 +85,6 @@ class ASN1ReadErrorTests: XCTestCase {
 
   func testErrorDescription_indefiniteLengthNotSupported() {
     let error = ASN1ReadError.indefiniteLengthNotSupported(atPosition: 1)
-
     let errorDescription = error.errorDescription
 
     XCTAssertEqual("Indefinite length not supported: atPosition: 1", errorDescription)

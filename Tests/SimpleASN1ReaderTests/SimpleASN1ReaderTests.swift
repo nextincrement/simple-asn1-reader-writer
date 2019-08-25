@@ -11,8 +11,7 @@ import SimpleASN1Reader
 
 class SimpleASN1ReaderTests: XCTestCase {
 
-  private let derEncoding: [UInt8] = [0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01,
-    0x07]
+  private let derEncoding: [UInt8] = [0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07]
 
   // BER encoding representing the same data as the DER encoding above (first length byte = 0x81)
   private let berEncoding: [UInt8] = [0x30, 0x81, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01,
@@ -33,7 +32,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Call methods under tests
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00])
+    try simpleASN1Reader.skip([0x05, 0x00])
     let contents = try simpleASN1Reader.readContentsOfBitString()
 
     // Check result
@@ -47,7 +46,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Call methods under test
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00])
+    try simpleASN1Reader.skip([0x05, 0x00])
     let contents = try simpleASN1Reader.readContentsOfBitString()
 
     // Check result
@@ -63,7 +62,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     let subSimpleASN1Reading: SimpleASN1Reading = try simpleASN1Reader.getReaderForContents()
 
     // Check result
-    try subSimpleASN1Reading.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
+    try subSimpleASN1Reading.skip([0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
   func testGetReaderForContents_identifiedBy() throws {
@@ -77,15 +76,16 @@ class SimpleASN1ReaderTests: XCTestCase {
     )
 
     // Check result
-    try subSimpleASN1Reading.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
+    try subSimpleASN1Reading.skip([0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
   func testReadContents() throws {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00])
+    try simpleASN1Reader.skip([0x05, 0x00])
 
     // Call method under test
     let contents = try simpleASN1Reader.readContents()
@@ -98,8 +98,9 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00])
+    try simpleASN1Reader.skip([0x05, 0x00])
 
     // Call method under test
     let contents = try simpleASN1Reader.readContents(identifiedBy: 0x03)
@@ -112,6 +113,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -125,6 +127,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -140,6 +143,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -151,14 +155,15 @@ class SimpleASN1ReaderTests: XCTestCase {
     XCTAssertEqual([0x00, 0x02, 0x01, 0x07], contents)
   }
 
-  func testSkipBytes() throws {
+  func testSkip() throws {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
+
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
+    try simpleASN1Reader.skip([0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
 
     // Check result
     let identifier = try simpleASN1Reader.peek()
@@ -175,7 +180,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     try simpleASN1Reader.unwrap()
 
     // Check result
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
+    try simpleASN1Reader.skip([0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
   func testUnwrap_expectedIdentifier() throws {
@@ -187,7 +192,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Check result
-    try simpleASN1Reader.skipBytes(matching: [0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
+    try simpleASN1Reader.skip([0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
   func testPeek() throws {
@@ -202,8 +207,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     XCTAssertEqual(0x30, identifier)
 
     // Also verify that the pointer (currentIndex) has not been moved
-    try simpleASN1Reader.skipBytes(matching: [0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01,
-      0x07])
+    try simpleASN1Reader.skip([0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
   }
 
   func testPeek_noMoreComponentsLeft() throws {
@@ -211,8 +215,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
 
-    try simpleASN1Reader.skipBytes(matching: [0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01,
-      0x07])
+    try simpleASN1Reader.skip([0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
 
     // Call method under test
     let identifier = try simpleASN1Reader.peek()
@@ -229,6 +232,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let contents127: [UInt8] = Array(repeating: 0x00, count: 127)
+
     let sequence = insert([0x30, 0x7F], atTheBeginningOf: contents127)
     let simpleASN1Reader = SimpleASN1Reader(sequence)
 
@@ -243,6 +247,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let contents128: [UInt8] = Array(repeating: 0x00, count: 128)
+
     let sequence = insert([0x30, 0x81, 0x80], atTheBeginningOf: contents128)
     let simpleASN1Reader = SimpleASN1Reader(sequence)
 
@@ -293,6 +298,7 @@ class SimpleASN1ReaderTests: XCTestCase {
       atPosition: 0,
       ofEncoding: derEncoding_octedString
     )
+
     XCTAssertEqual(thrownError as? ASN1ReadError, expectedError)
   }
 
@@ -330,7 +336,7 @@ class SimpleASN1ReaderTests: XCTestCase {
     try testInvalidIdentifier (try simpleASN1Reader.skipComponent(identifiedBy: 0x31))
   }
 
-  func testSkipBytes_invalidBytes() throws {
+  func testSkip_invalidBytes() throws {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
@@ -338,7 +344,7 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Call method under test
     XCTAssertThrowsError(
-      try simpleASN1Reader.skipBytes(matching: [0x31, 0x08])
+      try simpleASN1Reader.skip([0x31, 0x08])
     ) { thrownError = $0 }
 
     // Check thrown error
@@ -464,13 +470,13 @@ class SimpleASN1ReaderTests: XCTestCase {
     )
   }
 
-  func testSkipBytes_invalidLength() throws {
+  func testSkip_invalidLength() throws {
     let simpleASN1Reader = SimpleASN1Reader(derEncoding_noLengthBytes)
     var thrownError: Error?
 
     // Call method under test
     XCTAssertThrowsError(
-      try simpleASN1Reader.skipBytes(matching: [0x30, 0x08])
+      try simpleASN1Reader.skip([0x30, 0x08])
     ) { thrownError = $0 }
 
     // Check thrown error
@@ -534,7 +540,9 @@ class SimpleASN1ReaderTests: XCTestCase {
 
   private func insert(_ addedBytes: [UInt8], atTheBeginningOf bytes: [UInt8]) -> [UInt8] {
     var concatenatedBytes = bytes
+
     concatenatedBytes.insert(contentsOf: addedBytes, at: 0)
+
     return concatenatedBytes
   }
 
@@ -608,39 +616,40 @@ class SimpleASN1ReaderTests: XCTestCase {
       testCombinedMethodsToReadBitString_derEncoding),
     ("testCombinedMethodsToReadBitString_berEncoding",
       testCombinedMethodsToReadBitString_berEncoding),
-    ("testGetReaderForContents",testGetReaderForContents),
-    ("testGetReaderForContents_identifiedBy",testGetReaderForContents_identifiedBy),
-    ("testReadContents",testReadContents),
-    ("testReadContents_identifiedBy",testReadContents_identifiedBy),
-    ("testReadContents_zeroBytes",testReadContents_zeroBytes),
-    ("testSkipComponent",testSkipComponent),
-    ("testSkipComponent_identifiedBy",testSkipComponent_identifiedBy),
-    ("testSkipBytes",testSkipBytes),
-    ("testUnwrap",testUnwrap),
+    ("testGetReaderForContents", testGetReaderForContents),
+    ("testGetReaderForContents_identifiedBy", testGetReaderForContents_identifiedBy),
+    ("testReadContents", testReadContents),
+    ("testReadContents_identifiedBy", testReadContents_identifiedBy),
+    ("testReadContents_zeroBytes", testReadContents_zeroBytes),
+    ("testSkipComponent", testSkipComponent),
+    ("testSkipComponent_identifiedBy", testSkipComponent_identifiedBy),
+    ("testSkip", testSkip),
+    ("testUnwrap", testUnwrap),
     ("testUnwrap_expectedIdentifier", testUnwrap_expectedIdentifier),
-    ("testPeek",testPeek),
-    ("testPeek_noMoreComponentsLeft",testPeek_noMoreComponentsLeft),
+    ("testPeek", testPeek),
+    ("testPeek_noMoreComponentsLeft", testPeek_noMoreComponentsLeft),
     ("testReadContents_127_bytes", testReadContents_127_bytes),
     ("testReadContents_128_bytes", testReadContents_128_bytes),
-    ("testGetReaderForContents_invalidIdentifier",testGetReaderForContents_invalidIdentifier),
-    ("testReadContents_invalidIdentifier",testReadContents_invalidIdentifier),
-    ("testReadContentsOfBitString_invalidIdentifier",testReadContentsOfBitString_invalidIdentifier),
+    ("testGetReaderForContents_invalidIdentifier", testGetReaderForContents_invalidIdentifier),
+    ("testReadContents_invalidIdentifier", testReadContents_invalidIdentifier),
+    ("testReadContentsOfBitString_invalidIdentifier",
+      testReadContentsOfBitString_invalidIdentifier),
     ("testReadContentsOfBitString_unsupportedFirstContentsByte",
       testReadContentsOfBitString_unsupportedFirstContentsByte),
-    ("testSkipComponent_invalidIdentifier",testSkipComponent_invalidIdentifier),
-    ("testSkipBytes_invalidBytes",testSkipBytes_invalidBytes),
-    ("testUnwrap_invalidIdentifier",testUnwrap_invalidIdentifier),
-    ("testGetReaderForContents_invalidLength_1",testGetReaderForContents_invalidLength_1),
-    ("testGetReaderForContents_invalidLength_2",testGetReaderForContents_invalidLength_2),
-    ("testReadContents_invalidLength_1",testReadContents_invalidLength_1),
-    ("testReadContents_invalidLength_2",testReadContents_invalidLength_2),
-    ("testReadContentsOfBitString_invalidLength_1",testReadContentsOfBitString_invalidLength_1),
-    ("testReadContentsOfBitString_invalidLength_2",testReadContentsOfBitString_invalidLength_2),
-    ("testSkipComponent_invalidLength_1",testSkipComponent_invalidLength_1),
-    ("testSkipComponent_invalidLength_2",testSkipComponent_invalidLength_2),
-    ("testSkipBytes_invalidLength",testSkipBytes_invalidLength),
-    ("testUnwrap_invalidLength_1",testUnwrap_invalidLength_1),
-    ("testUnwrap_invalidLength_2",testUnwrap_invalidLength_2),
-    ("testReadContents_indefiniteLength",testReadContents_indefiniteLength),
+    ("testSkipComponent_invalidIdentifier", testSkipComponent_invalidIdentifier),
+    ("testSkip_invalidBytes", testSkip_invalidBytes),
+    ("testUnwrap_invalidIdentifier", testUnwrap_invalidIdentifier),
+    ("testGetReaderForContents_invalidLength_1", testGetReaderForContents_invalidLength_1),
+    ("testGetReaderForContents_invalidLength_2", testGetReaderForContents_invalidLength_2),
+    ("testReadContents_invalidLength_1", testReadContents_invalidLength_1),
+    ("testReadContents_invalidLength_2", testReadContents_invalidLength_2),
+    ("testReadContentsOfBitString_invalidLength_1", testReadContentsOfBitString_invalidLength_1),
+    ("testReadContentsOfBitString_invalidLength_2", testReadContentsOfBitString_invalidLength_2),
+    ("testSkipComponent_invalidLength_1", testSkipComponent_invalidLength_1),
+    ("testSkipComponent_invalidLength_2", testSkipComponent_invalidLength_2),
+    ("testSkip_invalidLength", testSkip_invalidLength),
+    ("testUnwrap_invalidLength_1", testUnwrap_invalidLength_1),
+    ("testUnwrap_invalidLength_2", testUnwrap_invalidLength_2),
+    ("testReadContents_indefiniteLength", testReadContents_indefiniteLength),
   ]
 }

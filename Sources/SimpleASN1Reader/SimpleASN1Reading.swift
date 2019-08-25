@@ -83,7 +83,10 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that all bytes will be verified and that an error is thrown if these bytes don’t match
   /// provided argument.
   ///
-  /// - Parameter matching: Bytes that will be verified
+  /// - Parameter expectedBytes: Bytes that will be verified
+  func skip(_ expectedBytes: [UInt8]) throws
+
+  /// Decprecated, use `skip(_:)`
   func skipBytes(matching expectedBytes: [UInt8]) throws
 
   /// Skips identifier and length bytes of the next component so that subsequent reads will work on
