@@ -86,15 +86,9 @@ public protocol SimpleASN1Reading: AnyObject {
   /// - Parameter expectedBytes: Bytes that will be verified
   func skip(_ expectedBytes: [UInt8]) throws
 
-  /// Decprecated, use `skip(_:)`
-  func skipBytes(matching expectedBytes: [UInt8]) throws
-
   /// Skips identifier and length bytes of the next component so that subsequent reads will work on
   /// bytes below.
   func unwrap() throws
-
-  /// Decprecated, use method `unwrap()`
-  func skipIdentifierAndLength() throws
 
   /// Skips identifier and length bytes of the next component so that subsequent reads will work on
   /// bytes below.
@@ -104,9 +98,6 @@ public protocol SimpleASN1Reading: AnyObject {
   ///
   /// - Parameter expectedIdentifier: ASN.1 identiefier that will be verified
   func unwrap(expectedIdentifier: UInt8) throws
-
-  /// Decprecated, use method `unwrap(expectedIdentifier:)`
-  func skipIdentifierAndLength(expectedIdentifier: UInt8) throws
 
   /// Reads the identifier of the next component without consuming it. Subsequent reads will work as
   /// if this method has not been called. If there are no more components left to read, the value

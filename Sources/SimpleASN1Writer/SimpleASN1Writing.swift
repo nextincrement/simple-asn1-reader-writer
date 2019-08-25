@@ -28,16 +28,10 @@ public protocol SimpleASN1Writing: AnyObject {
   /// - Parameter from: Another instance of a class implementing this protocol
   func write(from writer: SimpleASN1Writer)
 
-  /// Deprecated, use `write(from:)`
-  func writeBytes(from writer: SimpleASN1Writer)
-
   /// Writes bytes on top of all bytes written below (as a sibling).
   ///
   /// - Parameter bytes: Bytes that will be written on top of bytes below
   func write(_ bytes: [UInt8])
-
-  /// Deprecated, use write(_:)
-  func writeBytes(_ bytes: [UInt8])
 
   /// Writes contents, length and identifier bytes, in that particular order, on top of all bytes
   /// written below. The number represented by the length bytes applies to the number of contents
@@ -48,23 +42,14 @@ public protocol SimpleASN1Writing: AnyObject {
   ///   - identifiedBy: ASN.1 identifier of the component
   func write(_ contents: [UInt8], identifiedBy identifier: UInt8)
 
-  /// Deprecated, use `write(_:identifiedBy:)`
-  func writeContents(_ contents: [UInt8], identifiedBy expectedIdentifier: UInt8)
-
   /// Writes length and identifier bytes, in that particular order, to wrap all bytes written below.
   ///
   /// - Parameter with: ASN.1 identifier byte that will be written on top of length bytes and bytes
   ///     below
   func wrap(with identifier: UInt8)
 
-  /// Deprecated, use method `wrap`
-  func writeLengthAndIdentifier(_ identifier: UInt8)
-
   /// Convenience method that writes length and identifier bytes of a bit string, in that particular
   /// order, to wrap all bytes written below. The bit string is assumed to have no unused bits (that
   /// is, the fist contents byte has value 0x00).
   func wrapBitString()
-
-  /// Deprecated, use method `wrapBitstring`
-  func writeLengthAndIdentifierOfBitString()
 }

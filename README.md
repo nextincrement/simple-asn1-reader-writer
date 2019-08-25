@@ -44,7 +44,7 @@ $ swift test
 
 To depend on `simple-asn1-reader-writer`, put the following in the `dependencies` of your `Package.swift`:
 
-    .package(url: "https://github.com/nextincrement/simple-asn1-reader-writer.git", from: "0.0.3"),
+    .package(url: "https://github.com/nextincrement/simple-asn1-reader-writer.git", from: "0.1.0"),
 
 See the [rsa-public-key-importer-exporter](https://github.com/nextincrement/rsa-public-key-importer-exporter) project for an example of how the [reader](https://github.com/nextincrement/rsa-public-key-importer-exporter/blob/master/Sources/RSAPublicKeyImporter/RSAPublicKeyImporter.swift) and [writer](https://github.com/nextincrement/rsa-public-key-importer-exporter/blob/master/Sources/RSAPublicKeyExporter/RSAPublicKeyExporter.swift) can be used.
 

@@ -79,29 +79,14 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     currentIndex += expectedBytes.count
   }
 
-  @available(*, deprecated, renamed: "skip")
-  public func skipBytes(matching expectedBytes: [UInt8]) throws {
-    try skip(expectedBytes)
-  }
-
   public func unwrap() throws {
     let contentsLength = try readLength()
     try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
   }
 
-  @available(*, deprecated, renamed: "unwrap")
-  public func skipIdentifierAndLength() throws {
-    try unwrap()
-  }
-
   public func unwrap(expectedIdentifier: UInt8) throws {
     let contentsLength = try readLength(identifiedBy: expectedIdentifier)
     try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
-  }
-
-  @available(*, deprecated, renamed: "unwrap")
-  public func skipIdentifierAndLength(expectedIdentifier: UInt8) throws {
-    try unwrap(expectedIdentifier: expectedIdentifier)
   }
 
   public func peek() throws -> UInt8 {
