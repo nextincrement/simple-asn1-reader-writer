@@ -51,8 +51,8 @@ See the [rsa-public-key-importer-exporter](https://github.com/nextincrement/rsa-
 ## Contribute
 
 Your interest in this project is highly appreciated. However, contributions might not be accepted for the following reasons:
-- I am just one developer and time is scarce.
 - The development environment that I currently have at hand is a Linux system on a virtual machine. I will thus not always be able to test how this code runs on a macOS or an iOS platform (although the first version will be tested on an iOS platform).
+- I’m just one developer and time is scarce.
 
 Some contributions may get accepted if for example a bug should be fixed that prevents parts of the code from being used in a common situation.
 
