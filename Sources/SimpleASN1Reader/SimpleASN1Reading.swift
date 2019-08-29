@@ -34,7 +34,7 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter identifiedBy: ASN.1 identifier that will be verified
+  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
   ///
   /// - Returns: A reader that implements the `SimpleASN1Reading` protocol
   func getReaderForContents(identifiedBy expectedIdentifier: UInt8) throws -> SimpleASN1Reading
@@ -49,7 +49,7 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter identifiedBy: ASN.1 identifier that will be verified
+  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
   ///
   /// - Returns: Contents bytes
   func readContents(identifiedBy expectedIdentifier: UInt8) throws -> [UInt8]
@@ -75,7 +75,7 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter identifiedBy: ASN.1 identifier that will be verified
+  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
   func skipComponent(identifiedBy expectedIdentifier: UInt8) throws
 
   /// Skips provided bytes. Subsequent reads will work on bytes below.

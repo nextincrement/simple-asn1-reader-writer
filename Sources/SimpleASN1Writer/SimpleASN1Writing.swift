@@ -25,7 +25,7 @@ public protocol SimpleASN1Writing: AnyObject {
   /// Convenience method that adds the encoding of another instance to the current instance. All
   /// bytes of the `SimpleASN1Writer` will be written on top of bytes written below (as a sibling).
   ///
-  /// - Parameter from: Another instance of a class implementing this protocol
+  /// - Parameter writer: Another instance of a class implementing this protocol
   func write(from writer: SimpleASN1Writer)
 
   /// Writes bytes on top of all bytes written below (as a sibling).
@@ -44,8 +44,8 @@ public protocol SimpleASN1Writing: AnyObject {
 
   /// Writes length and identifier bytes, in that particular order, to wrap all bytes written below.
   ///
-  /// - Parameter with: ASN.1 identifier byte that will be written on top of length bytes and bytes
-  ///     below
+  /// - Parameter identifier: ASN.1 identifier byte that will be written on top of length bytes and
+  ///     bytes below
   func wrap(with identifier: UInt8)
 
   /// Convenience method that writes length and identifier bytes of a bit string, in that particular

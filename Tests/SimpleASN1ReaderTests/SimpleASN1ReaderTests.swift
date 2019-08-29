@@ -83,7 +83,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
     try simpleASN1Reader.skip([0x05, 0x00])
 
@@ -98,7 +97,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
     try simpleASN1Reader.skip([0x05, 0x00])
 
@@ -113,7 +111,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -127,7 +124,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -143,7 +139,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -159,7 +154,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.unwrap(expectedIdentifier: 0x30)
 
     // Call method under test
@@ -214,7 +208,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let simpleASN1Reader = SimpleASN1Reader(derEncoding)
-
     try simpleASN1Reader.skip([0x30, 0x08, 0x05, 0x00, 0x03, 0x04, 0x00, 0x02, 0x01, 0x07])
 
     // Call method under test
@@ -232,7 +225,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let contents127: [UInt8] = Array(repeating: 0x00, count: 127)
-
     let sequence = insert([0x30, 0x7F], atTheBeginningOf: contents127)
     let simpleASN1Reader = SimpleASN1Reader(sequence)
 
@@ -247,7 +239,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
     // Prepare test
     let contents128: [UInt8] = Array(repeating: 0x00, count: 128)
-
     let sequence = insert([0x30, 0x81, 0x80], atTheBeginningOf: contents128)
     let simpleASN1Reader = SimpleASN1Reader(sequence)
 
@@ -540,7 +531,6 @@ class SimpleASN1ReaderTests: XCTestCase {
 
   private func insert(_ addedBytes: [UInt8], atTheBeginningOf bytes: [UInt8]) -> [UInt8] {
     var concatenatedBytes = bytes
-
     concatenatedBytes.insert(contentsOf: addedBytes, at: 0)
 
     return concatenatedBytes

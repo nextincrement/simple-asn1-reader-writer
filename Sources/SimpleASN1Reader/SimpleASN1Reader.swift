@@ -6,6 +6,8 @@
 //  Copyright © 2019 nextincrement
 //
 
+import Foundation
+
 public final class SimpleASN1Reader: SimpleASN1Reading {
 
   // Constants
@@ -48,10 +50,7 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
   }
 
   public func readContentsOfBitString() throws -> [UInt8] {
-    let contents = try doReadContents(
-      identifiedBy: bitStringIdentifier,
-      skipFirstByte: true
-    )
+    let contents = try doReadContents(identifiedBy: bitStringIdentifier, skipFirstByte: true)
 
     return Array(contents)
   }
@@ -164,7 +163,6 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     try checkEncodingLength(minimumRemainingBytes: 1, forReading: "First byte of length field")
 
     let firstByte = encoding[currentIndex]
-
     guard  firstByte != 128 else {
       throw ASN1ReadError.indefiniteLengthNotSupported(atPosition: currentIndex)
     }
@@ -180,14 +178,12 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     throws -> ArraySlice<UInt8> {
 
     let lengthFieldCount = Int(firstByte - 128) + 1
-
     try checkEncodingLength(
       minimumRemainingBytes: lengthFieldCount,
       forReading: "Length field bytes"
     )
 
     let lengthField = encoding[currentIndex..<(currentIndex + lengthFieldCount)]
-
     currentIndex += lengthFieldCount
 
     return lengthField
@@ -202,8 +198,9 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
 
     // Length is encoded by all but the first byte in the length field
     var length: UInt64 = 0
+
     for byte in lengthField.dropFirst() {
-      length = (length << 8)
+      length = length << 8
       length += UInt64(byte)
     }
     return Int(length)

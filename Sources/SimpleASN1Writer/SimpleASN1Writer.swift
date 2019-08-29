@@ -29,7 +29,6 @@ public final class SimpleASN1Writer: SimpleASN1Writing {
 
   public func write(_ contents: [UInt8], identifiedBy identifier: UInt8) {
     encoding.insert(contentsOf: contents, at: 0)
-
     writeLengthAndIdentifier(with: identifier, onTopOf: contents)
   }
 
@@ -39,13 +38,11 @@ public final class SimpleASN1Writer: SimpleASN1Writing {
 
   public func wrapBitString() {
     encoding.insert(supportedFirstContentsByte, at: 0)
-
     writeLengthAndIdentifier(with: bitStringIdentifier, onTopOf: encoding)
   }
 
   private func writeLengthAndIdentifier(with identifier: UInt8, onTopOf contents: [UInt8]) {
     encoding.insert(contentsOf: lengthField(of: contents), at: 0)
-
     encoding.insert(identifier, at: 0)
   }
 

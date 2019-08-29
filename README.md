@@ -31,7 +31,7 @@ This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, writ
 - [ ] Encodings with an indefinite length
 - [ ] `ASN.1 CER` encoding format when writing bytes
 
-The above items are deliberately not supported to keep both the reader and the writer simple and focused. In addition, the assumption has been made that the last three items are not used that often. It is therefore not expected that one of these items will be supported at some time in the future.
+The above items are deliberately not supported to keep both the reader and the writer simple and focused. In addition, the assumption has been made that the last three items are not commonly used. It is therefore not expected that one of these items will be supported at some time in the future.
 
 ## Usage
 
