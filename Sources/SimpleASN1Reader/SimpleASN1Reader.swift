@@ -196,13 +196,9 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
       return Int(lengthField[0])
     }
 
-    // Length is encoded by all but the first byte in the length field
-    var length: UInt64 = 0
+    // Length is encoded by all bytes after the first byte in the length field
+    let length = lengthField.dropFirst().reduce(UInt64(0)) { ($0 << 8) + UInt64($1) }
 
-    for byte in lengthField.dropFirst() {
-      length = length << 8
-      length += UInt64(byte)
-    }
     return Int(length)
   }
 

@@ -1,15 +1,15 @@
 # Simple ASN.1 Reader and Writer
 
-A simple reader and writer for reading and writing `ASN.1` encoded bytes.
+A simple reader and writer for reading and writing ASN.1 encoded bytes.
 
 [![Swift Version][swift-image]][swift-url] [![License][license-image]][license-url]
 
-This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, written in Swift and featuring a reader and writer that can be used for reading and writing `ASN.1` encoded bytes.
+This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, written in Swift and featuring a reader and writer that can be used for reading and writing ASN.1 encoded bytes.
 
 ## Features
 
 #### Reader
-- [x] Reading any `ASN.1 BER` encoding (so, including `DER` and `CER` encoding formats)
+- [x] Reading any ASN.1 BER encoding (so, including DER and CER encoding formats)
 - [x] Reading contents bytes
 - [x] Readahead of identifier byte
 - [x] Validation of identifier byte
@@ -18,7 +18,7 @@ This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, writ
 - [x] Skipping bytes
 
 #### Writer
-- [x] Encoding bytes using the `ASN.1 DER` encoding format
+- [x] Encoding bytes using the ASN.1 DER encoding format
 - [x] Inserting new bytes on top of all bytes written before (as a sibling)
 - [x] Inserting a component represented with a simple type on top of all bytes written before (as a sibling)
 - [x] Composing structured types with a dedicated writer and inserting these components on top of all bytes written before (as a sibling)
@@ -29,9 +29,9 @@ This project includes the `SimpleASN1Reader` and `SimpleASN1Writer` module, writ
 - [ ] Reading and writing from and to an underlying [`Stream`](https://developer.apple.com/documentation/foundation/stream)
 - [ ] High tag numbers (that is, tag numbers are encoded by a single byte)
 - [ ] Encodings with an indefinite length
-- [ ] `ASN.1 CER` encoding format when writing bytes
+- [ ] ASN.1 CER encoding format when writing bytes
 
-The above items are deliberately not supported to keep both the reader and the writer simple and focused. In addition, the assumption has been made that the last three items are not commonly used. It is therefore not expected that one of these items will be supported at some time in the future.
+The above items are deliberately not supported to keep both the reader and the writer simple and focused. In addition, the assumption has been made that the last three items are not commonly used. So, it is not expected that one of these items will be supported at some time in the future.
 
 ## Usage
 
