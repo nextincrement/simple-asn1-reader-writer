@@ -34,11 +34,13 @@ public protocol SimpleASN1Writing: AnyObject {
 
   /// Writes contents, length and identifier bytes, in that particular order, on top of all bytes
   /// written below. The number represented by the length bytes applies to the number of contents
-  /// bytes of the added component. And if the identifier denotes a bit string, the first byte of
-  /// the contents must give the number of bits by which the length of the bit string is less than
-  /// the next multiple of eight (this is called the “number of unused bits”). Both the padding
-  /// after the last bit and the inclusion of the first contents byte – which gives the length of
-  /// this padding – will be considered the responsibility of the client.
+  /// bytes of the added component.
+  ///
+  /// If the identifier denotes a bit string, the first byte of the contents must give the number of
+  /// bits by which the length of the bit string is less than the next multiple of eight (this is
+  /// called the “number of unused bits”). Both the padding after the last bit and the inclusion of
+  /// the first contents byte – which gives the length of this padding – will be considered the
+  /// responsibility of the client.
   ///
   /// - Parameters:
   ///   - contents: The contents bytes of the component.
