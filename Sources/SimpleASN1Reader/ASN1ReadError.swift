@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ASN1ReadError: LocalizedError, Equatable {
+public enum ASN1ReadError: Equatable {
   case invalidIdentifier(
     expectedIdentifier: UInt8,
     actualIdentifier: UInt8,
@@ -34,6 +34,9 @@ public enum ASN1ReadError: LocalizedError, Equatable {
     ofEncoding: [UInt8]
   )
   case indefiniteLengthNotSupported(atPosition: Int)
+}
+
+extension ASN1ReadError: LocalizedError {
 
   public var errorDescription: String? {
     switch self {

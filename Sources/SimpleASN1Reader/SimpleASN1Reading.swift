@@ -12,7 +12,6 @@
 /// - No conversion between Swift data types and bytes (so, only bytes out)
 /// - No support for high tag numbers (that is, tag numbers are encoded by a single byte)
 /// - No support for encodings that have an indefinite length
-/// - No reading from an underlying `Stream` (the full encoding must be added during initialization)
 ///
 /// Note that this protocol is designed in a way that only a single instance of an implementation
 /// has to be created to read any encoding, as long as it is clear upfront which tags are expected
@@ -23,9 +22,10 @@
 public protocol SimpleASN1Reading: AnyObject {
 
   /// Returns a new child reader for reading the contents bytes of the next component. Subsequent
-  /// reads using the current (parent) reader will work on bytes below.
+  /// reads using the current reader (parent) will work on bytes below.
   ///
-  /// - Returns: A reader that implements the `SimpleASN1Reading` protocol
+  /// - Returns: A reader that implements the `SimpleASN1Reading` protocol.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func getReaderForContents() throws -> SimpleASN1Reading
 
   /// Returns a new child reader for reading the contents bytes of the next component. Subsequent
@@ -34,14 +34,15 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
-  ///
-  /// - Returns: A reader that implements the `SimpleASN1Reading` protocol
+  /// - Parameter expectedIdentifier: An ASN.1 identifier that will be verified.
+  /// - Returns: A reader implementing the `SimpleASN1Reading` protocol.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func getReaderForContents(identifiedBy expectedIdentifier: UInt8) throws -> SimpleASN1Reading
 
   /// Reads contents bytes of the next component. Subsequent reads will work on bytes below.
   ///
-  /// - Returns: Contents bytes
+  /// - Returns: The contents bytes.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func readContents() throws -> [UInt8]
 
   /// Reads contents bytes of the next component. Subsequent reads will work on bytes below.
@@ -49,9 +50,9 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
-  ///
-  /// - Returns: Contents bytes
+  /// - Parameter expectedIdentifier: An ASN.1 identifier that will be verified.
+  /// - Returns: The contents bytes.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func readContents(identifiedBy expectedIdentifier: UInt8) throws -> [UInt8]
 
   /// Convenience method for reading the contents of the most basic type of bit string that has no
@@ -62,11 +63,14 @@ public protocol SimpleASN1Reading: AnyObject {
   /// thrown if either the identifier byte does not match expected value `0x03` or the first
   /// contents byte does not match the expected value `0x00`.
   ///
-  /// - Returns: Contents bytes of the bit string while excluding the first byte
+  /// - Returns: The contents bytes of a bit string while excluding the first byte.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func readContentsOfBitString() throws -> [UInt8]
 
   /// Skips bytes of a component (including identifier, length and contents bytes) so that
   /// subsequent reads will work on bytes below.
+  ///
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func skipComponent() throws
 
   /// Skips bytes of a component (including identifier, length and contents bytes) so that
@@ -75,7 +79,9 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter expectedIdentifier: ASN.1 identifier that will be verified
+  /// - Parameter expectedIdentifier: The ASN.1 identifier of the component that is to be skipped,
+  ///     which will be verified.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func skipComponent(identifiedBy expectedIdentifier: UInt8) throws
 
   /// Skips provided bytes. Subsequent reads will work on bytes below.
@@ -83,11 +89,14 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that all bytes will be verified and that an error is thrown if these bytes don’t match
   /// provided argument.
   ///
-  /// - Parameter expectedBytes: Bytes that will be verified
+  /// - Parameter expectedBytes: The bytes that will be verified.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func skip(_ expectedBytes: [UInt8]) throws
 
   /// Skips identifier and length bytes of the next component so that subsequent reads will work on
   /// bytes below.
+  ///
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func unwrap() throws
 
   /// Skips identifier and length bytes of the next component so that subsequent reads will work on
@@ -96,13 +105,16 @@ public protocol SimpleASN1Reading: AnyObject {
   /// Note that the identifier byte will be verified and that an error is thrown if it does not
   /// match provided argument.
   ///
-  /// - Parameter expectedIdentifier: ASN.1 identiefier that will be verified
+  /// - Parameter expectedIdentifier: The ASN.1 identiefier of the wrapping component, which will be
+  ///     verified.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func unwrap(expectedIdentifier: UInt8) throws
 
   /// Reads the identifier of the next component without consuming it. Subsequent reads will work as
   /// if this method has not been called. If there are no more components left to read, the value
   /// 0x00 will be returned.
   ///
-  /// - Returns: ASN.1 identifier or 0x00
+  /// - Returns: The ASN.1 identifier of the next component or 0x00.
+  /// - Throws: An `ASN1ReadError` if the encoding appears to be invalid.
   func peek() throws -> UInt8
 }

@@ -13,7 +13,6 @@
 /// - No conversion between Swift data types and bytes (so, only bytes in)
 /// - No high tag numbers (that is, tag numbers are encoded by a single byte)
 /// - No support for encodings that have an indefinite length
-/// - No writing to an underlying `Stream`
 ///
 /// Note that this protocol is designed in a way that multiple instances of an implementation should
 /// be created if the encoding has a tree-like structure that forks into multiple branches.
@@ -25,31 +24,35 @@ public protocol SimpleASN1Writing: AnyObject {
   /// Convenience method that adds the encoding of another instance to the current instance. All
   /// bytes of the `SimpleASN1Writer` will be written on top of bytes written below (as a sibling).
   ///
-  /// - Parameter writer: Another instance of a class implementing this protocol
+  /// - Parameter writer: Another instance of a class implementing this protocol.
   func write(from writer: SimpleASN1Writer)
 
   /// Writes bytes on top of all bytes written below (as a sibling).
   ///
-  /// - Parameter bytes: Bytes that will be written on top of bytes below
+  /// - Parameter bytes: The bytes that will be written on top of bytes below.
   func write(_ bytes: [UInt8])
 
   /// Writes contents, length and identifier bytes, in that particular order, on top of all bytes
   /// written below. The number represented by the length bytes applies to the number of contents
-  /// bytes of the added component.
+  /// bytes of the added component. And if the identifier denotes a bit string, the first byte of
+  /// the contents must give the number of bits by which the length of the bit string is less than
+  /// the next multiple of eight (this is called the “number of unused bits”). Both the padding
+  /// after the last bit and the inclusion of the first contents byte – which gives the length of
+  /// this padding – will be considered the responsibility of the client.
   ///
   /// - Parameters:
-  ///   - contents: Contents bytes of the component
-  ///   - identifiedBy: ASN.1 identifier of the component
+  ///   - contents: The contents bytes of the component.
+  ///   - identifier: The ASN.1 identifier of the component.
   func write(_ contents: [UInt8], identifiedBy identifier: UInt8)
 
   /// Writes length and identifier bytes, in that particular order, to wrap all bytes written below.
   ///
-  /// - Parameter identifier: ASN.1 identifier byte that will be written on top of length bytes and
-  ///     bytes below
+  /// - Parameter identifier: The ASN.1 identifier byte that will be written on top of the length
+  ///     bytes and all bytes below.
   func wrap(with identifier: UInt8)
 
-  /// Convenience method that writes length and identifier bytes of a bit string, in that particular
-  /// order, to wrap all bytes written below. The bit string is assumed to have no unused bits (that
-  /// is, the fist contents byte has value 0x00).
+  /// Writes length and identifier bytes of a bit string, in that particular order, to wrap all
+  /// bytes written below. The bit string is assumed to have no unused bits (that is, the fist
+  /// contents byte has value 0x00).
   func wrapBitString()
 }

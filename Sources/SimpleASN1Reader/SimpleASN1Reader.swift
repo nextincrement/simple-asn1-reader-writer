@@ -64,7 +64,7 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
   }
 
   public func skip(_ expectedBytes: [UInt8]) throws {
-    try checkEncodingLength(minimumRemainingBytes: expectedBytes.count, forReading: "Bytes")
+    try check(minimumRemainingBytes: expectedBytes.count, forReading: "Bytes")
     let bytes = encoding[currentIndex..<(currentIndex + expectedBytes.count)]
 
     guard expectedBytes.elementsEqual(bytes) else {
@@ -80,12 +80,12 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
 
   public func unwrap() throws {
     let contentsLength = try readLength()
-    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
+    try check(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
   }
 
   public func unwrap(expectedIdentifier: UInt8) throws {
     let contentsLength = try readLength(identifiedBy: expectedIdentifier)
-    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
+    try check(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
   }
 
   public func peek() throws -> UInt8 {
@@ -106,13 +106,13 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
       try skipFirstContentsByte()
       contentsLength -= 1
     }
-    try checkEncodingLength(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
+    try check(minimumRemainingBytes: contentsLength, forReading: "Contents bytes")
 
     return encoding[currentIndex..<(currentIndex + contentsLength)]
   }
 
   private func skipFirstContentsByte() throws {
-    try checkEncodingLength(minimumRemainingBytes: 1, forReading: "First contents byte")
+    try check(minimumRemainingBytes: 1, forReading: "First contents byte")
 
     let firstByte = encoding[currentIndex]
 
@@ -142,7 +142,7 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
   }
 
   private func skipIdentifier(_ expectedIdentifier: UInt8?) throws {
-    try checkEncodingLength(minimumRemainingBytes: 1, forReading: "Identifier byte")
+    try check(minimumRemainingBytes: 1, forReading: "Identifier byte")
 
     if let expectedIdentifier = expectedIdentifier {
       let firstByte = encoding[currentIndex]
@@ -160,7 +160,7 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
   }
 
   private func readLengthField() throws -> ArraySlice<UInt8> {
-    try checkEncodingLength(minimumRemainingBytes: 1, forReading: "First byte of length field")
+    try check(minimumRemainingBytes: 1, forReading: "First byte of length field")
 
     let firstByte = encoding[currentIndex]
     guard  firstByte != 128 else {
@@ -171,17 +171,14 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
       currentIndex += 1
       return [firstByte]
     }
-    return try readLongLengthField(withFirstByte: firstByte);
+    return try readLongLengthField(withFirstByte: firstByte)
   }
 
   private func readLongLengthField(withFirstByte firstByte: UInt8)
     throws -> ArraySlice<UInt8> {
 
     let lengthFieldCount = Int(firstByte - 128) + 1
-    try checkEncodingLength(
-      minimumRemainingBytes: lengthFieldCount,
-      forReading: "Length field bytes"
-    )
+    try check(minimumRemainingBytes: lengthFieldCount, forReading: "Length field bytes")
 
     let lengthField = encoding[currentIndex..<(currentIndex + lengthFieldCount)]
     currentIndex += lengthFieldCount
@@ -202,7 +199,7 @@ public final class SimpleASN1Reader: SimpleASN1Reading {
     return Int(length)
   }
 
-  private func checkEncodingLength(minimumRemainingBytes: Int, forReading: String) throws {
+  private func check(minimumRemainingBytes: Int, forReading: String) throws {
     guard encoding.count >= (minimumRemainingBytes + currentIndex) else {
       throw ASN1ReadError.invalidLength(
         minimumRemainingBytes: minimumRemainingBytes,
